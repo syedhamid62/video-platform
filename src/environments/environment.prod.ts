@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.yourdomain.com/api'
+  // RELPACE THIS URL AFTER DEPLOYING BACKEND TO RAILWAY/RENDER
+  apiUrl: 'https://YOUR-BACKEND-URL.up.railway.app/api'
 };
