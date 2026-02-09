@@ -1,0 +1,20 @@
+.form-control.ng-touched.ng-invalid {
+  border-color: #dc3545;
+}
+
+.form-select.ng-touched.ng-invalid {
+  border-color: #dc3545;
+}
+/* .form-select-lg + .dropdown-menu {
+  width: 100% !important;
+  max-height: 40vh !important;
+  overflow-y: auto !important;
+} */
+ input[type="tel"] {
+  letter-spacing: 1px;
+}
+
+/* Show green check when valid */
+input[type="tel"].ng-valid.ng-touched {
+  border-color: #28a745 !important;
+}

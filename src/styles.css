@@ -1,1 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Global Theme Variables */
+:root {
+    --brand-primary: #9F221C;
+    /* Deep Red - Dark Tone */
+    --brand-secondary: #D1882C;
+    /* Golden Orange - Light Tone */
+    --brand-hover: #7D1A16;
+    /* Darker Red */
+    --brand-accent: #E5A54F;
+    /* Lighter Gold */
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #ffffff;
+}
+
+/* Global overrides for common elements */
+.btn-primary {
+    background-color: var(--brand-primary) !important;
+    border-color: var(--brand-primary) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--brand-hover) !important;
+    border-color: var(--brand-hover) !important;
+}
+
+.btn-outline-primary {
+    color: var(--brand-primary) !important;
+    border-color: var(--brand-primary) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary.active {
+    background-color: var(--brand-primary) !important;
+    color: white !important;
+}
+
+.text-primary {
+    color: var(--brand-primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--brand-primary) !important;
+}

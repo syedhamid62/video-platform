@@ -1,0 +1,216 @@
+<div class="container py-5 my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-9">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-danger text-white p-4">
+          <h2 class="mb-0 fw-bold"><i class="bi bi-camera-reels me-2"></i>{{ 'VIDEO_UPLOAD.REPORT_INCIDENT_TITLE' |
+            translate }}</h2>
+          <p class="mb-0 opacity-75">{{ 'VIDEO_UPLOAD.REPORT_SUBTITLE' | translate }}</p>
+        </div>
+        <div class="card-body p-4 p-md-5">
+
+          <div class="alert alert-info mb-4 border-0 bg-info-subtle">
+            <h5 class="alert-heading fw-bold"><i class="bi bi-shield-check me-2"></i>{{
+              'VIDEO_UPLOAD.ADMIN_REVIEW_HEADER' | translate }}</h5>
+            <p class="mb-0 small">
+              {{ 'VIDEO_UPLOAD.ADMIN_REVIEW_BODY' | translate }}
+            </p>
+          </div>
+
+          <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Title -->
+            <div class="mb-4">
+              <label for="title" class="form-label fw-bold text-uppercase small text-muted">{{
+                'VIDEO_UPLOAD.HEADLINE_LABEL' | translate }} <span class="text-danger">*</span></label>
+              <input type="text" class="form-control form-control-lg" id="title" formControlName="title"
+                [placeholder]="'VIDEO_UPLOAD.HEADLINE_PLACEHOLDER' | translate">
+              <div *ngIf="uploadForm.get('title')?.invalid && uploadForm.get('title')?.touched"
+                class="text-danger small mt-1">
+                {{ 'VIDEO_UPLOAD.TITLE_ERROR' | translate }}
+              </div>
+            </div>
+
+            <!-- Description with Read More Preview -->
+            <div class="mb-4">
+              <label for="description" class="form-label fw-bold text-uppercase small text-muted">
+                {{ 'VIDEO_UPLOAD.FULL_REPORT_LABEL' | translate }} <span class="text-danger">*</span>
+              </label>
+              <textarea class="form-control" id="description" rows="10" formControlName="description"
+                [placeholder]="'VIDEO_UPLOAD.FULL_REPORT_PLACEHOLDER' | translate"></textarea>
+              <div class="d-flex justify-content-between mt-1">
+                <small class="text-muted">{{ 'VIDEO_UPLOAD.WORD_COUNT' | translate }}: {{ wordCount }} (min 50
+                  chars)</small>
+                <small class="text-muted">{{ 'VIDEO_UPLOAD.DETAILS_REQUIRED' | translate }}</small>
+              </div>
+
+              <div *ngIf="uploadForm.get('description')?.invalid && uploadForm.get('description')?.touched"
+                class="text-danger small mt-1">
+                {{ 'VIDEO_UPLOAD.DESCRIPTION_ERROR' | translate }}
+              </div>
+
+              <!-- Preview with Read More / Read Less -->
+              <div class="mt-3 p-3 bg-light rounded" *ngIf="uploadForm.get('description')?.value">
+                <h6 class="fw-bold text-muted small text-uppercase mb-2">{{ 'VIDEO_UPLOAD.PREVIEW_LABEL' | translate }}
+                </h6>
+                <p [innerHTML]="truncatedDescription" class="mb-1"></p>
+                <a href="javascript:void(0)" (click)="toggleReadMore()"
+                  class="text-primary fw-medium small text-uppercase text-decoration-none">
+                  {{ showFullDescription ? ('VIDEO_PLAYER.SHOW_LESS' | translate) : ('VIDEO_PLAYER.READ_MORE' |
+                  translate) }}
+                </a>
+              </div>
+            </div>
+
+            <!-- Video File -->
+            <div class="mb-4">
+              <label for="videoFile" class="form-label fw-bold text-uppercase small text-muted">{{
+                'VIDEO_UPLOAD.EVIDENCE_VIDEO_LABEL' | translate }}
+                <span class="text-danger">*</span></label>
+              <div class="input-group input-group-lg">
+                <input type="file" class="form-control" id="videoFile" accept="video/*"
+                  (change)="onVideoSelected($event)">
+              </div>
+              <small class="text-muted d-block mt-1"><i class="bi bi-info-circle me-1"></i>{{
+                'VIDEO_UPLOAD.VIDEO_FILE_HELP_NEWS' | translate }}</small>
+              <div *ngIf="videoError" class="text-danger mt-2 fw-bold"><i class="bi bi-exclamation-triangle me-1"></i>{{
+                videoError }}</div>
+              <div *ngIf="videoPreviewUrl" class="mt-3 text-center bg-dark rounded p-2">
+                <video [src]="videoPreviewUrl" controls class="img-fluid rounded" style="max-height: 400px;"></video>
+              </div>
+            </div>
+
+            <!-- Thumbnail (Optional) -->
+            <div class="mb-4">
+              <label for="thumbnail" class="form-label fw-bold text-uppercase small text-muted">{{
+                'VIDEO_UPLOAD.COVER_IMAGE_LABEL' | translate }}
+                <small class="text-muted">({{ 'RECOMMENDED' | translate }})</small></label>
+              <input type="file" class="form-control" id="thumbnail" accept="image/*"
+                (change)="onThumbnailSelected($event)">
+              <small class="text-muted">{{ 'VIDEO_UPLOAD.THUMBNAIL_HELP' | translate }}</small>
+              <div *ngIf="thumbnailPreviewUrl" class="mt-3">
+                <img [src]="thumbnailPreviewUrl" class="img-fluid rounded shadow-sm" style="max-height: 200px;"
+                  alt="Cover Preview">
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="mb-4">
+              <label for="tags" class="form-label fw-bold text-uppercase small text-muted">{{
+                'VIDEO_UPLOAD.KEYWORDS_LABEL' | translate }}</label>
+              <input type="text" class="form-control" id="tags" formControlName="tags"
+                [placeholder]="'VIDEO_UPLOAD.TAGS_PLACEHOLDER' | translate">
+              <small class="text-muted">{{ 'VIDEO_UPLOAD.TAGS_HELP' | translate }}</small>
+            </div>
+
+            <!-- News Location Selection -->
+            <div class="mb-4">
+              <label class="form-label fw-bold text-uppercase small text-muted">News Location <span
+                  class="text-danger">*</span></label>
+
+              <div class="row g-2">
+                <!-- Country -->
+                <div class="col-md-4">
+                  <select class="form-select" formControlName="country">
+                    <option value="" disabled>Select Country</option>
+                    <option value="Global">Global</option>
+                    <option value="India">India</option>
+                  </select>
+                  <div *ngIf="uploadForm.get('country')?.invalid && uploadForm.get('country')?.touched"
+                    class="text-danger small mt-1">Country is required</div>
+                </div>
+
+                <!-- State (India Only) -->
+                <div class="col-md-4" *ngIf="uploadForm.get('country')?.value === 'India'">
+                  <select class="form-select" formControlName="state">
+                    <option value="" disabled>Select State</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Telangana">Telangana</option>
+                  </select>
+                  <div *ngIf="uploadForm.get('state')?.invalid && uploadForm.get('state')?.touched"
+                    class="text-danger small mt-1">State is required</div>
+                </div>
+
+                <!-- District (State Selected) -->
+                <div class="col-md-4" *ngIf="uploadForm.get('state')?.value">
+                  <select class="form-select" formControlName="district">
+                    <option value="" disabled>Select District</option>
+                    <option *ngFor="let district of availableDistricts" [value]="district">{{ district }}</option>
+                  </select>
+                  <div *ngIf="uploadForm.get('district')?.invalid && uploadForm.get('district')?.touched"
+                    class="text-danger small mt-1">District is required</div>
+                </div>
+              </div>
+
+              <!-- Formatted Display -->
+              <div class="mt-2 p-2 bg-light border rounded" *ngIf="formattedAddress">
+                <small class="text-muted fw-bold">Selected Location:</small>
+                <span class="d-block text-danger fw-bold">{{ formattedAddress }}</span>
+              </div>
+            </div>
+
+            <!-- Categories Dropdown (With Grid Support) -->
+            <div class="mb-4">
+              <label class="form-label fw-bold text-uppercase small text-muted">{{ 'VIDEO_UPLOAD.CATEGORY_LABEL' |
+                translate }} <span class="text-danger">*</span></label>
+
+              <!-- Dropdown Trigger Button -->
+              <button type="button"
+                class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center mb-2"
+                (click)="toggleCategories()">
+                <span *ngIf="!uploadForm.get('categories')?.value">{{ 'SELECT_CATEGORY' | translate }}</span>
+                <span *ngIf="uploadForm.get('categories')?.value" class="fw-bold text-dark">
+                  {{ getSelectedCategoryLabel() }}
+                </span>
+                <i class="bi" [class.bi-chevron-down]="!showCategories" [class.bi-chevron-up]="showCategories"></i>
+              </button>
+
+              <!-- Collapsible Category Grid -->
+              <div class="card bg-light border-0" *ngIf="showCategories">
+                <div class="card-body">
+                  <div class="row g-2 category-grid">
+                    <!-- 3 columns on LG, 2 on MD, 1 on small screens -->
+                    <div class="col-12 col-md-6 col-lg-4" *ngFor="let cat of categoryList">
+                      <div class="form-check p-2 bg-white rounded border shadow-sm h-100 d-flex align-items-center">
+                        <input class="form-check-input m-0 me-2" type="radio" formControlName="categories"
+                          [id]="cat.value" [value]="cat.value" (click)="toggleCategories()">
+                        <label class="form-check-label text-truncate w-100 cursor-pointer" [for]="cat.value"
+                          [title]="cat.label" style="cursor: pointer;">
+                          {{ cat.label }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="uploadForm.get('categories')?.invalid && uploadForm.get('categories')?.touched"
+                class="text-danger small mt-2">
+                {{ 'VIDEO_UPLOAD.CATEGORIES_ERROR' | translate }}
+              </div>
+            </div>
+
+            <!-- Terms & Conditions -->
+            <div class="mb-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="terms" formControlName="terms">
+                <label class="form-check-label small" for="terms">
+                  {{ 'VIDEO_UPLOAD.AGREE_TERMS_NEWS' | translate }}
+                </label>
+              </div>
+              <div *ngIf="uploadForm.get('terms')?.invalid && uploadForm.get('terms')?.touched"
+                class="text-danger small mt-2">
+                {{ 'VIDEO_UPLOAD.TERMS_ERROR' | translate }}
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-danger btn-lg py-3 fw-bold shadow-sm">
+                <i class="bi bi-send me-2"></i>{{ 'VIDEO_UPLOAD.SUBMIT_REPORT_BTN' | translate }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

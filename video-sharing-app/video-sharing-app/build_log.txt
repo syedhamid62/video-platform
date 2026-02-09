@@ -1,0 +1,145 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< com.videosharing:video-sharing-app >-----------------
+[INFO] Building video-sharing-app 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-clean-plugin/3.3.2/maven-clean-plugin-3.3.2.pom
+Progress (1): 798 B
+Progress (1): 1.9 kB
+Progress (1): 4.5 kB
+Progress (1): 5.3 kB
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-clean-plugin/3.3.2/maven-clean-plugin-3.3.2.pom (5.3 kB at 12 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/40/maven-plugins-40.pom
+Progress (1): 773 B
+Progress (1): 1.9 kB
+Progress (1): 4.5 kB
+Progress (1): 6.8 kB
+Progress (1): 8.1 kB
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/40/maven-plugins-40.pom (8.1 kB at 57 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven-parent/40/maven-parent-40.pom
+Progress (1): 727 B
+Progress (1): 1.7 kB
+Progress (1): 4.6 kB
+Progress (1): 8.9 kB
+Progress (1): 12 kB 
+Progress (1): 17 kB
+Progress (1): 21 kB
+Progress (1): 24 kB
+Progress (1): 27 kB
+Progress (1): 28 kB
+Progress (1): 30 kB
+Progress (1): 33 kB
+Progress (1): 37 kB
+Progress (1): 39 kB
+Progress (1): 42 kB
+Progress (1): 45 kB
+Progress (1): 49 kB
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven-parent/40/maven-parent-40.pom (49 kB at 484 kB/s)
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ video-sharing-app ---
+[INFO] Deleting E:\video-platform-newUI\video-platform\video-platform\video-sharing-app\video-sharing-app\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ video-sharing-app ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ video-sharing-app ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 36 source files with javac [debug release 17] to target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[39,25] ',', '}', or ';' expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[46,9] enum constant expected here
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[51,37] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[54,34] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[57,34] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[60,73] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[63,34] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[70,16] invalid method declaration; return type required
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[73,16] invalid method declaration; return type required
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[220,2] reached end of file while parsing
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[227,13] illegal start of type
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[228,13] statements not expected outside of methods and initializers
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[229,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[231,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[235,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[238,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[239,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[240,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[241,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[244,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[246,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[249,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[252,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[253,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[254,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[255,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[258,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[260,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[261,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[262,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[265,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[267,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[268,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[269,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[272,13] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[275,13] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[276,1] class, interface, enum, or record expected
+[INFO] 37 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.997 s
+[INFO] Finished at: 2026-02-07T13:20:44+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project video-sharing-app: Compilation failure: Compilation failure: 
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[39,25] ',', '}', or ';' expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[46,9] enum constant expected here
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[51,37] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[54,34] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[57,34] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[60,73] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[63,34] <identifier> expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[70,16] invalid method declaration; return type required
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[73,16] invalid method declaration; return type required
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/model/entity/Video.java:[220,2] reached end of file while parsing
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[227,13] illegal start of type
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[228,13] statements not expected outside of methods and initializers
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[229,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[231,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[235,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[238,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[239,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[240,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[241,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[244,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[246,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[249,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[252,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[253,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[254,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[255,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[258,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[260,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[261,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[262,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[265,12] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[267,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[268,9] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[269,5] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[272,13] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[275,13] class, interface, enum, or record expected
+[ERROR] /E:/video-platform-newUI/video-platform/video-platform/video-sharing-app/video-sharing-app/src/main/java/com/videosharing/service/impl/VideoServiceImpl.java:[276,1] class, interface, enum, or record expected
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

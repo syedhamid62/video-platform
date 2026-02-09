@@ -1,0 +1,181 @@
+/* Newsroom / Reporter Theme (Shared copy) */
+
+/* Layout & Container */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Header - "Breaking News" Vibe */
+.card-header {
+  background: linear-gradient(135deg, #d32f2f, #b71c1c) !important;
+  color: white;
+  border-bottom: 4px solid #8e0000;
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+.card-header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: skewX(-20deg);
+  animation: shine 6s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -50%;
+  }
+
+  20% {
+    left: 150%;
+  }
+
+  100% {
+    left: 150%;
+  }
+}
+
+/* Titles */
+.card-title {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+/* Form Styles */
+.card-body {
+  padding: 2rem;
+}
+
+.form-label {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #444;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.form-control {
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 12px 15px;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+  background-color: #fcfcfc;
+}
+
+.form-control:focus {
+  background-color: #fff;
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1);
+  outline: none;
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+  border-color: #ced4da;
+  color: #666;
+}
+
+/* Password Toggle Btn */
+.btn-outline-secondary {
+  border-color: #ced4da;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+/* Buttons */
+.btn-danger {
+  background: linear-gradient(to bottom, #d32f2f, #c62828);
+  border: none;
+  border-bottom: 4px solid #8e0000;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.1s;
+  font-weight: 700;
+  padding: 12px;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(to bottom, #e53935, #d32f2f);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(211, 47, 47, 0.3);
+}
+
+.btn-danger:active {
+  transform: translateY(2px);
+  border-bottom-width: 0px;
+  margin-top: 4px;
+}
+
+/* Footer Links */
+.register-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.register-link a {
+  color: #d32f2f;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+/* Spinner */
+.spinner-border {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-width: 2px;
+}
+
+/* Checkbox */
+.form-check-input:checked {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+}
+
+/* Utilities */
+.cursor-pointer {
+  cursor: pointer;
+}

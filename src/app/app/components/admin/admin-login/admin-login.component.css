@@ -1,0 +1,159 @@
+/* Newsroom / Reporter Theme (Admin) */
+
+/* Layout & Container */
+.admin-login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
+    /* Darker/More Severe for Admin */
+}
+
+.login-card {
+    width: 100%;
+    max-width: 450px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Header - "Admin Access" Vibe */
+.card-header {
+    background: linear-gradient(135deg, #b71c1c, #7f0000) !important;
+    /* Darker Red */
+    color: white;
+    border-bottom: 4px solid #500000;
+    position: relative;
+    overflow: hidden;
+    padding: 1.5rem 2rem;
+    text-align: center;
+}
+
+.card-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: skewX(-20deg);
+    animation: shine 8s infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -50%;
+    }
+
+    20% {
+        left: 150%;
+    }
+
+    100% {
+        left: 150%;
+    }
+}
+
+/* Titles */
+.card-title {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.card-subtitle {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Form Styles */
+.card-body {
+    padding: 2rem;
+}
+
+.form-label {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #444;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+    background-color: #fcfcfc;
+}
+
+.form-control:focus {
+    background-color: #fff;
+    border-color: #b71c1c;
+    box-shadow: 0 0 0 4px rgba(183, 28, 28, 0.1);
+    outline: none;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+    color: #666;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(to bottom, #b71c1c, #7f0000);
+    /* Dark Red for Admin */
+    border: none;
+    border-bottom: 4px solid #500000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.1s;
+    font-weight: 700;
+    padding: 12px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to bottom, #d32f2f, #b71c1c);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(183, 28, 28, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(2px);
+    border-bottom-width: 0px;
+    margin-top: 4px;
+}
+
+.btn-outline-secondary {
+    color: #555;
+    border-color: #ccc;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.btn-outline-secondary:hover {
+    background: #f0f0f0;
+    color: #000;
+}
+
+/* Alerts */
+.alert-danger {
+    font-size: 0.9rem;
+    border-radius: 4px;
+    background-color: #ffebee;
+    color: #b71c1c;
+    border: 1px solid #ef5350;
+}

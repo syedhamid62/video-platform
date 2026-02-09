@@ -1,0 +1,110 @@
+<!-- Section 1: Top Navbar (Aaj Tak Style) -->
+<nav class="navbar navbar-expand-lg aajtak-navbar sticky-top">
+  <div class="container-fluid px-0">
+
+    <!-- Left: Hamburger & Logo -->
+    <div class="d-flex align-items-center">
+      <button class="btn text-white me-2 d-lg-none" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarContent">
+        <i class="bi bi-list fs-3"></i>
+      </button>
+
+      <a class="aajtak-logo-container" routerLink="/home">
+        <!-- Using a placeholder if the new logo isn't exactly matched, but keeping the structure -->
+        <img src="assets/images/am5tv-logo-new.png" alt="AM5TV" class="aajtak-logo-img">
+      </a>
+    </div>
+
+    <!-- Center: Navigation Links -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link aajtak-nav-link" routerLink="/home" routerLinkActive="active">{{ 'HOME' | translate }}</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link aajtak-nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">{{ 'NEWS'
+            | translate }}</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" routerLink="/news" [queryParams]="{cat: 'politics'}">{{ 'POLITICS' | translate
+                }}</a></li>
+            <li><a class="dropdown-item" routerLink="/news" [queryParams]="{cat: 'sports'}">{{ 'SPORTS' | translate
+                }}</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link aajtak-nav-link" routerLink="/about" routerLinkActive="active">{{ 'ABOUT' | translate
+            }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link aajtak-nav-link" routerLink="/live-tv">LIVE TV</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right: Search & User -->
+    <div class="d-flex align-items-center">
+      <!-- Edition / Language Selector -->
+      <div class="d-none d-md-flex align-items-center me-2">
+        <app-language-selector></app-language-selector>
+      </div>
+
+      <button class="btn icon-btn" (click)="toggleSearch()">
+        <i class="bi bi-search"></i>
+      </button>
+
+      <ng-container *ngIf="isLoggedIn; else notLoggedIn">
+        <div class="dropdown ms-2">
+          <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" href="#" role="button"
+            data-bs-toggle="dropdown">
+            <img [src]="getProfileImage()" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="navigateToProfile()">{{ 'PROFILE' | translate }}</a></li>
+            <li><a class="dropdown-item" routerLink="/upload">{{ 'UPLOAD_VIDEO' | translate }}</a></li>
+            <li><a class="dropdown-item" routerLink="/image-upload">Upload Photo News</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item text-danger" (click)="logout.emit()">{{ 'LOGOUT' | translate }}</a></li>
+          </ul>
+        </div>
+      </ng-container>
+
+      <ng-template #notLoggedIn>
+        <a routerLink="/login" class="btn btn-sm btn-outline-light ms-2 fw-bold">LOGIN</a>
+      </ng-template>
+    </div>
+
+  </div>
+</nav>
+
+<!-- Section 2: Breaking News Ticker (Red Bar) -->
+<div class="news-ticker-container">
+  <div class="breaking-label">
+    BREAKING NEWS
+  </div>
+  <div class="ticker-content">
+    <marquee behavior="scroll" direction="left" scrollamount="6">
+      We are launching new stream soon • Stay tuned for live updates • Telangana Budget 2026 Analysis coming up at 9 PM
+    </marquee>
+    <!-- Close button mock -->
+    <button class="btn text-white ms-3" style="font-size: 1.2rem;">&times;</button>
+  </div>
+</div>
+
+<!-- Hidden Search Overlay (Optional logic can be added later if needed, simpler for now) -->
+<div *ngIf="showSearch" class="position-absolute w-100 bg-white p-3 shadow" style="top: 50px; z-index: 1050;">
+  <form (submit)="onSearch()" class="d-flex">
+    <input class="form-control me-2" type="search" [(ngModel)]="searchQuery" (input)="onSearchInput($event)"
+      placeholder="Search news..." name="searchQuery">
+    <button class="btn btn-primary" type="submit">Search</button>
+  </form>
+
+  <!-- Suggestions Dropdown -->
+  <ul class="list-group position-absolute w-100 mt-1 shadow-sm" *ngIf="suggestions.length > 0" style="z-index: 1060;">
+    <li class="list-group-item list-group-item-action" *ngFor="let suggestion of suggestions"
+      (click)="selectSuggestion(suggestion)" style="cursor: pointer;">
+      <i class="bi bi-search me-2 text-muted"></i> {{ suggestion }}
+    </li>
+  </ul>
+</div>

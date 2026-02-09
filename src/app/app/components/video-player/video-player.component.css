@@ -1,0 +1,33 @@
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.ratio {
+  border-radius: 15px 15px 0 0;
+  overflow: hidden;
+}
+
+.btn-outline-primary:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+.text-primary {
+  cursor: pointer;
+}
+
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+  .row g-4 {
+    flex-direction: column;
+  }
+
+  .col-md-6 {
+    flex: 0 0 100%;
+  }
+}

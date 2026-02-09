@@ -1,0 +1,163 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <!-- Main Profile Section -->
+    <div class="col-12 col-xl-10">
+
+      <!-- Profile Card -->
+      <div class="card profile-card mb-5">
+        <!-- Cover Photo -->
+        <div class="profile-cover"></div>
+
+        <div class="card-body text-center pt-0 px-4 px-md-5">
+          <!-- Profile Picture & Upload -->
+          <div class="profile-pic-wrapper">
+            <img [src]="getProfileImage()" alt="Profile" class="profile-pic rounded-circle">
+
+            <label for="profilePicInput"
+              class="upload-btn-overlay position-absolute bottom-0 end-0 bg-primary text-white rounded-circle shadow-sm"
+              title="Change Profile Picture">
+              <i class="bi bi-camera-fill"></i>
+            </label>
+            <input type="file" id="profilePicInput" class="d-none" (change)="onFileSelected($event)" accept="image/*">
+          </div>
+
+          <!-- View Mode -->
+          <ng-container *ngIf="!editMode; else editModeTemplate">
+            <h2 class="fw-bold text-dark mb-1">{{user?.username || 'User'}}</h2>
+            <p class="text-muted mb-2">{{user?.firstName}} {{user?.lastName}}</p>
+            <div class="d-flex justify-content-center mb-4">
+              <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-normal">
+                <i class="bi bi-envelope me-2"></i>{{user?.email}}
+              </span>
+            </div>
+
+            <p class="text-secondary mx-auto mb-4" style="max-width: 600px; line-height: 1.6;">
+              {{user?.bio || 'Tell us about yourself...'}}
+            </p>
+
+            <div class="d-flex flex-wrap justify-content-center gap-3 pb-4">
+              <button class="btn btn-primary-custom" (click)="toggleEditMode()">
+                <i class="bi bi-pencil me-2"></i>{{ 'PROFILE_PAGE.EDIT_PROFILE_BTN' | translate }}
+              </button>
+              <button class="btn btn-outline-custom" (click)="uploadNewVideo()">
+                <i class="bi bi-cloud-upload me-2"></i>{{ 'PROFILE_PAGE.UPLOAD_NEW_VIDEO_BTN' | translate }}
+              </button>
+              <button class="btn btn-outline-danger" style="border-radius: 30px;" (click)="logout()">
+                <i class="bi bi-box-arrow-right me-2"></i>{{ 'LOGOUT' | translate }}
+              </button>
+            </div>
+          </ng-container>
+
+          <!-- Edit Mode Template -->
+          <ng-template #editModeTemplate>
+            <form [formGroup]="profileForm" class="text-start mt-3">
+              <div class="row g-3">
+                <div class="col-12">
+                  <h4 class="fw-bold mb-3 text-center">Edit Profile</h4>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="firstName" class="form-label">{{ 'AUTH.FIRST_NAME_LABEL' | translate }}</label>
+                  <input type="text" class="form-control" id="firstName" formControlName="firstName">
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="lastName" class="form-label">{{ 'AUTH.LAST_NAME_LABEL' | translate }}</label>
+                  <input type="text" class="form-control" id="lastName" formControlName="lastName">
+                </div>
+
+                <div class="col-12 mb-3">
+                  <label for="username" class="form-label">{{ 'AUTH.USERNAME_LABEL' | translate }}</label>
+                  <input type="text" class="form-control" id="username" formControlName="username">
+                  <div class="form-text">This will be your display name.</div>
+                </div>
+
+                <div class="col-12 mb-4">
+                  <label for="bio" class="form-label">{{ 'PROFILE_PAGE.BIO_LABEL' | translate }}</label>
+                  <textarea class="form-control" id="bio" rows="4" formControlName="bio"
+                    [placeholder]="'PROFILE_PAGE.BIO_PLACEHOLDER' | translate"></textarea>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-center gap-3 pb-4">
+                <button class="btn btn-primary-custom px-5" (click)="saveProfile()" [disabled]="profileForm.invalid">
+                  {{ 'PROFILE_PAGE.SAVE_CHANGES_BTN' | translate }}
+                </button>
+                <button class="btn btn-outline-secondary px-5 rounded-pill" (click)="toggleEditMode()">
+                  {{ 'PROFILE_PAGE.CANCEL_BTN' | translate }}
+                </button>
+              </div>
+            </form>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Uploaded Videos Section -->
+      <div class="text-center mb-5">
+        <h3 class="section-title">{{ 'PROFILE_PAGE.YOUR_UPLOADED_VIDEOS' | translate }}</h3>
+      </div>
+
+      <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-4" *ngFor="let video of videos">
+          <div class="card video-card h-100 shadow-sm">
+            <div class="position-relative">
+              <img [src]="video.thumbnailUrl || 'https://placehold.co/600x400'" class="card-img-top"
+                alt="{{video.title}}" style="height: 180px; object-fit: cover;">
+              <div class="position-absolute top-0 end-0 m-2 badge bg-dark opacity-75">
+                <i class="bi" [class.bi-camera-video-fill]="!video.contentType || video.contentType === 'VIDEO'"
+                  [class.bi-image]="video.contentType === 'IMAGE'"></i>
+              </div>
+              <div class="position-absolute bottom-0 start-0 m-2">
+                <span class="badge status-badge" [ngClass]="{
+                      'bg-success': video.status === 'APPROVED',
+                      'bg-warning text-dark': video.status === 'PENDING',
+                      'bg-danger': video.status === 'REJECTED'
+                    }">
+                  {{video.status}}
+                </span>
+              </div>
+            </div>
+
+            <div class="card-body d-flex flex-column">
+              <h6 class="card-title fw-bold text-truncate mb-2" title="{{video.title}}">{{video.title}}</h6>
+              <div class="d-flex justify-content-between text-muted small mb-3">
+                <span><i class="bi bi-calendar3 me-1"></i>{{video.createdAt | date:'mediumDate'}}</span>
+                <span><i class="bi bi-eye me-1"></i>{{video.views | number}}</span>
+              </div>
+
+              <!-- Rejection Reason -->
+              <div *ngIf="video.status === 'REJECTED'" class="mb-3">
+                <button class="btn btn-sm btn-light text-danger w-100 border-danger"
+                  (click)="showRejectionReason(video.rejectionReason)">
+                  <i class="bi bi-info-circle me-1"></i> View Reason
+                </button>
+              </div>
+
+              <div class="mt-auto d-flex gap-2">
+                <a [routerLink]="['/video', video.id]" *ngIf="video.status === 'APPROVED'"
+                  class="btn btn-sm btn-outline-primary flex-grow-1 rounded-pill">
+                  {{ 'PROFILE_PAGE.VIEW_BTN' | translate }}
+                </a>
+                <button class="btn btn-sm btn-outline-danger flex-grow-1 rounded-pill" (click)="deleteVideo(video.id)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="col-12 text-center py-5" *ngIf="videos.length === 0">
+          <div class="text-muted mb-4 opacity-50">
+            <i class="bi bi-camera-reels display-1"></i>
+          </div>
+          <h5 class="text-muted">{{ 'PROFILE_PAGE.NO_VIDEOS_UPLOADED' | translate }}</h5>
+          <button class="btn btn-primary-custom mt-3" (click)="uploadNewVideo()">
+            {{ 'PROFILE_PAGE.UPLOAD_FIRST_VIDEO_BTN' | translate }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

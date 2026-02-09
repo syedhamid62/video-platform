@@ -1,0 +1,12 @@
+:root {
+  --bs-body-bg: #fff; /* light */
+  --bs-body-color: #212529;
+}
+.dark-mode {
+  --bs-body-bg: #212529; /* dark */
+  --bs-body-color: #fff;
+}
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}

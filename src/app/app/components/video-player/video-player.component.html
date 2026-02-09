@@ -1,0 +1,147 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-9">
+      <div class="card shadow-lg border-0 mb-5" *ngIf="video; else noVideo">
+        <!-- Video Player -->
+        <div class="ratio ratio-16x9 bg-dark">
+          <video *ngIf="video.url" [src]="video.url" controls class="w-100 h-100" poster="{{video.thumbnail || ''}}">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <div class="card-body pb-0">
+          <h2 class="fw-bold mb-3">{{video.title}}</h2>
+
+          <!-- Meta -->
+          <div class="d-flex flex-wrap text-muted mb-4 gap-4">
+            <span><i class="bi bi-eye me-1"></i> {{video.views | number}} views</span>
+            <span><i class="bi bi-clock me-1"></i> {{video.duration}}</span>
+            <span><i class="bi bi-calendar me-1"></i> {{video.uploadDate | date:'mediumDate'}}</span>
+          </div>
+
+          <!-- Uploader -->
+          <div class="d-flex align-items-center mb-4">
+            <img [src]="uploader?.profilePictureUrl || 'https://via.placeholder.com/60'" alt="Uploader"
+              class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+            <div>
+              <a [routerLink]="['/profile', uploader?.id]" class="fw-bold text-decoration-none text-dark fs-5">
+                {{uploader?.username || 'Unknown'}}
+              </a>
+              <p class="text-muted mb-0 small">{{ 'VIDEO_PLAYER.UPLOADED_BY' | translate }}</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-4">
+            <h5 class="fw-semibold mb-3">{{ 'VIDEO_PLAYER.DESCRIPTION' | translate }}</h5>
+            <div [innerHTML]="truncatedDescription" class="text-muted lh-lg"></div>
+            <button *ngIf="video.description.length > 300" class="btn btn-link p-0 mt-2" (click)="toggleReadMore()">
+              {{ showFullDescription ? ('VIDEO_PLAYER.SHOW_LESS' | translate) : ('VIDEO_PLAYER.READ_MORE' | translate)
+              }}
+            </button>
+          </div>
+
+          <!-- Categories & Tags -->
+          <div class="mb-4">
+            <h5 class="fw-semibold mb-3">{{ 'VIDEO_PLAYER.CATEGORIES_TAGS' | translate }}</h5>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-primary rounded-pill" *ngFor="let cat of video.categories">{{cat}}</span>
+              <span class="badge bg-secondary rounded-pill" *ngFor="let tag of video.tags">#{{tag}}</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="d-flex flex-wrap gap-3 mb-5">
+            <button class="btn btn-outline-primary d-flex align-items-center" (click)="toggleLike()">
+              <i class="bi" [ngClass]="video.likedByCurrentUser ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up'"></i>
+              <span class="ms-2">{{video.likes | number}}</span>
+            </button>
+
+            <button class="btn btn-outline-secondary d-flex align-items-center" data-bs-toggle="collapse"
+              href="#commentsCollapse">
+              <i class="bi bi-chat-dots"></i>
+              <span class="ms-2">{{comments.length}}</span>
+            </button>
+
+            <button class="btn btn-outline-info d-flex align-items-center" (click)="share()">
+              <i class="bi bi-share"></i>
+              <span class="ms-2">{{ 'VIDEO_PLAYER.SHARE' | translate }}</span>
+            </button>
+
+            <button class="btn btn-outline-success d-flex align-items-center" (click)="saveVideo()">
+              <i class="bi bi-bookmark"></i>
+              <span class="ms-2">{{ 'VIDEO_PLAYER.SAVE' | translate }}</span>
+            </button>
+
+            <button class="btn btn-outline-danger d-flex align-items-center" (click)="reportVideo()">
+              <i class="bi bi-flag"></i>
+              <span class="ms-2">{{ 'VIDEO_PLAYER.REPORT' | translate }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comments -->
+      <div class="collapse mb-5" id="commentsCollapse">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3">{{ 'VIDEO_PLAYER.COMMENTS' | translate }} ({{comments.length}})</h5>
+
+            <form (ngSubmit)="addComment()" class="mb-4">
+              <div class="input-group">
+                <input type="text" class="form-control" [(ngModel)]="newComment" name="newComment"
+                  [placeholder]="'VIDEO_PLAYER.PLACEHOLDER_COMMENT' | translate" required>
+                <button class="btn btn-primary" type="submit" [disabled]="!newComment.trim()">{{ 'VIDEO_PLAYER.POST_BTN'
+                  | translate }}</button>
+              </div>
+            </form>
+
+            <div class="list-group list-group-flush">
+              <div class="list-group-item px-0 py-3" *ngFor="let comment of comments">
+                <div class="d-flex">
+                  <img [src]="comment.user.profilePictureUrl" alt="" class="rounded-circle me-3"
+                    style="width: 48px; height: 48px;">
+                  <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between">
+                      <strong>{{comment.user.username}}</strong>
+                      <small class="text-muted">{{comment.date | date:'short'}}</small>
+                    </div>
+                    <p class="mb-1">{{comment.text}}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="comments.length === 0" class="text-center text-muted py-4">
+                {{ 'VIDEO_PLAYER.NO_COMMENTS' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Videos -->
+      <h4 class="fw-bold mb-4">{{ 'VIDEO_PLAYER.RELATED_VIDEOS' | translate }}</h4>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4" *ngFor="let rel of relatedVideos">
+          <div class="card h-100 border-0 shadow-sm">
+            <img [src]="rel.thumbnail || 'https://via.placeholder.com/640x360?text=Related'" class="card-img-top"
+              alt="{{rel.title}}" style="height: 180px; object-fit: cover;">
+            <div class="card-body">
+              <h6 class="card-title fw-bold mb-2">{{rel.title}}</h6>
+              <p class="text-muted small mb-1">{{rel.uploader.username}}</p>
+              <p class="text-muted small">{{rel.views | number}} views • {{rel.uploadDate | date:'mediumDate'}}</p>
+              <a [routerLink]="['/video', rel.id]" class="stretched-link"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Video -->
+      <ng-template #noVideo>
+        <div class="alert alert-warning text-center py-5">
+          {{ 'VIDEO_PLAYER.VIDEO_NOT_FOUND' | translate }}
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

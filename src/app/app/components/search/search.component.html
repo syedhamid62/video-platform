@@ -1,0 +1,33 @@
+<div class="container my-5">
+  <h2 class="mb-4">Search Results for "<span class="text-danger">{{ query }}</span>"</h2>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && videos.length === 0" class="alert alert-secondary text-center">
+    No results found for "{{ query }}". Try searching for something else.
+  </div>
+
+  <div class="row g-4" *ngIf="!loading && videos.length > 0">
+    <div class="col-md-3" *ngFor="let video of videos">
+      <div class="card h-100 border-0 shadow-sm video-card" [routerLink]="['/video', video.id]" style="cursor: pointer;">
+        <div class="position-relative">
+            <img [src]="getThumbnailUrl(video)" class="card-img-top rounded" alt="{{video.title}}"
+            style="height: 180px; object-fit: cover;">
+            <div class="position-absolute top-0 end-0 m-2 badge bg-dark opacity-75">
+                <i class="bi"
+                   [class.bi-camera-video-fill]="!video.contentType || video.contentType === 'VIDEO'"
+                   [class.bi-image]="video.contentType === 'IMAGE'"></i>
+              </div>
+        </div>
+        <div class="card-body px-0">
+          <h6 class="card-title fw-bold text-dark mb-1" style="font-size: 1rem; line-height: 1.4;">{{ video.title }}</h6>
+          <p class="card-text text-muted small mb-0">{{ video.createdAt | date:'mediumDate' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

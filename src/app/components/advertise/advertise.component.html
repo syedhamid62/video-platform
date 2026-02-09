@@ -1,0 +1,158 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5">
+          <h1 class="mb-4 text-center fw-bold">Advertise with Us</h1>
+          <p class="lead text-center text-muted mb-5">
+            Fill out this form to request advertising.<br class="d-none d-sm-inline">
+            Payment details will be discussed later.
+          </p>
+
+          <!-- Important Notes -->
+          <div class="alert alert-info mb-4">
+            <strong>Free Trial:</strong> Your ad will run for <strong>3 days free</strong>.<br>
+            After 3 days, our team will contact you for continuation & payment.<br>
+            Max video duration: <strong>30 seconds</strong>.<br>
+            Ads appear on <strong>Home</strong> and <strong>News</strong> pages (2 slots per page).
+          </div>
+
+          <form (ngSubmit)="submitForm()" class="needs-validation" novalidate>
+            <!-- Name -->
+            <div class="mb-4">
+              <label for="name" class="form-label fw-medium">Your Name</label>
+              <input type="text" class="form-control form-control-lg" id="name" [(ngModel)]="adForm.name" name="name" required placeholder="John Doe" />
+              <div class="invalid-feedback">Please enter your name</div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-4">
+              <label for="email" class="form-label fw-medium">Email</label>
+              <input type="email" class="form-control form-control-lg" id="email" [(ngModel)]="adForm.email" name="email" required placeholder="your.email@example.com" />
+              <div class="invalid-feedback">Please enter a valid email address</div>
+            </div>
+
+            <!-- Contact Number -->
+            <div class="mb-4">
+              <label for="contactNumber" class="form-label fw-medium">Contact Number</label>
+              <input type="tel" class="form-control form-control-lg" id="contactNumber" [(ngModel)]="adForm.contactNumber" name="contactNumber" required pattern="[0-9]{10}" placeholder="9063231976" title="Please enter a 10-digit mobile number" />
+              <div class="invalid-feedback">Please enter a valid 10-digit contact number</div>
+            </div>
+
+            <!-- Ad Type -->
+            <div class="mb-4">
+              <label class="form-label fw-medium">Ad Type</label>
+              <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-lg w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" [class.is-invalid]="!adForm.adType">
+                  {{ getAdTypeLabel(adForm.adType) }}
+                  <i class="bi bi-chevron-down ms-2"></i>
+                </button>
+                <ul class="dropdown-menu w-100">
+                  <li><a class="dropdown-item" (click)="adForm.adType = 'video-ad'; resetUpload()">Video Ad</a></li>
+                  <li><a class="dropdown-item" (click)="adForm.adType = 'banner'; resetUpload()">Banner Ad</a></li>
+                  <li><a class="dropdown-item" (click)="adForm.adType = 'sponsored-post'; resetUpload()">Sponsored Post</a></li>
+                </ul>
+                <div *ngIf="!adForm.adType" class="invalid-feedback d-block">Please select an ad type</div>
+              </div>
+            </div>
+
+            <!-- Dynamic Upload Section (appears after selecting Ad Type) -->
+            <div class="mb-5" *ngIf="adForm.adType">
+              <label class="form-label fw-medium">
+                {{ adForm.adType === 'video-ad' ? 'Upload Video (max 30s)' : 
+                   adForm.adType === 'banner' ? 'Upload Banner Image' : 
+                   'Write Sponsored Post + Optional Image' }}
+              </label>
+
+              <!-- Video Ad Upload -->
+              <div *ngIf="adForm.adType === 'video-ad'" class="mb-3">
+                <input type="file" class="form-control form-control-lg" accept="video/mp4,video/webm" (change)="onFileSelected($event)" />
+                <small class="text-muted d-block mt-2">Only MP4/WebM, max 30 seconds, < 50MB recommended</small>
+                <div *ngIf="uploadError" class="text-danger mt-2">{{ uploadError }}</div>
+                <video *ngIf="previewUrl" [src]="previewUrl" controls class="img-fluid mt-3" style="max-height: 300px;"></video>
+              </div>
+
+              <!-- Banner Ad Upload -->
+              <div *ngIf="adForm.adType === 'banner'" class="mb-3">
+                <input type="file" class="form-control form-control-lg" accept="image/jpeg,image/png,image/gif" (change)="onFileSelected($event)" />
+                <small class="text-muted d-block mt-2">Recommended size: 728x90, 300x250, 160x600 (JPG/PNG/GIF)</small>
+                <div *ngIf="uploadError" class="text-danger mt-2">{{ uploadError }}</div>
+                <img *ngIf="previewUrl" [src]="previewUrl" class="img-fluid mt-3" style="max-height: 200px;" />
+              </div>
+
+              <!-- Sponsored Post -->
+              <div *ngIf="adForm.adType === 'sponsored-post'">
+                <textarea class="form-control form-control-lg mb-3" rows="4" [(ngModel)]="adForm.description" name="postContent" required placeholder="Write your sponsored post content here..."></textarea>
+                <input type="file" class="form-control form-control-lg" accept="image/jpeg,image/png,image/gif" (change)="onFileSelected($event)" />
+                <small class="text-muted d-block mt-2">Optional: Upload supporting image (JPG/PNG/GIF)</small>
+                <img *ngIf="previewUrl" [src]="previewUrl" class="img-fluid mt-3" style="max-height: 200px;" />
+              </div>
+            </div>
+
+            <!-- Ad Location Filters -->
+            <div class="mb-4">
+              <label class="form-label fw-medium">Where do you want to show your ad?</label>
+              <div class="d-flex flex-wrap gap-3 mb-3">
+                <button type="button" class="btn btn-outline-primary rounded-pill px-4" [class.active]="adForm.scope === 'global'" (click)="adForm.scope = 'global'">Global</button>
+                <button type="button" class="btn btn-outline-primary rounded-pill px-4" [class.active]="adForm.scope === 'india'" (click)="adForm.scope = 'india'">India</button>
+              </div>
+
+              <div *ngIf="adForm.scope === 'india'" class="d-flex flex-wrap gap-3">
+                <div class="dropdown">
+                  <button class="btn btn-outline-primary rounded-pill px-4 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    {{ adForm.state || 'Select State' }}
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" (click)="adForm.state = 'Andhra Pradesh'; adForm.district = ''">Andhra Pradesh</a></li>
+                    <li><a class="dropdown-item" (click)="adForm.state = 'Telangana'; adForm.district = ''">Telangana</a></li>
+                  </ul>
+                </div>
+
+                <div class="dropdown" *ngIf="adForm.state">
+                  <button class="btn btn-outline-primary rounded-pill px-4 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    {{ adForm.district || 'Select District' }}
+                  </button>
+                  <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
+                    <li *ngFor="let district of getDistricts()">
+                      <a class="dropdown-item" (click)="adForm.district = district">{{district}}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-4">
+              <label for="description" class="form-label fw-medium">
+                What do you want to advertise?
+              </label>
+              <textarea
+                class="form-control form-control-lg"
+                id="description"
+                rows="5"
+                [(ngModel)]="adForm.description"
+                name="description"
+                required
+                placeholder="Describe your product/service, target audience, preferred ad duration, budget range, etc..."
+              ></textarea>
+              <div class="invalid-feedback">
+                Please tell us more about your advertisement
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success btn-lg py-3 fw-bold" [disabled]="loading || !adForm.adType">
+                {{ loading ? 'Submitting...' : 'Submit Request' }}
+              </button>
+            </div>
+          </form>
+
+          <div class="text-center mt-4 text-muted small">
+            <p>We usually respond within 24–48 hours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

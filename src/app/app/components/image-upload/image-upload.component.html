@@ -1,0 +1,145 @@
+<div class="container py-5 my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9">
+            <div class="card shadow-lg border-0">
+                <!-- Header -->
+                <div class="card-header bg-danger text-white p-4">
+                    <h2 class="mb-0 fw-bold"><i class="bi bi-camera me-2"></i>Upload Image News</h2>
+                    <p class="mb-0 opacity-75">Submit your photo journalism (up to 5 images) securely.</p>
+                </div>
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="alert alert-info mb-4 border-0 bg-info-subtle">
+                        <h5 class="alert-heading fw-bold"><i class="bi bi-shield-check me-2"></i>Admin Review Required</h5>
+                        <p class="mb-0 small">
+                            All image news submissions are verified by our editorial team before publishing.
+                        </p>
+                    </div>
+
+                    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" novalidate>
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-bold text-uppercase small text-muted">Headline <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg" id="title" formControlName="title" placeholder="Enter a catchy headline">
+                            <div *ngIf="uploadForm.get('title')?.invalid && uploadForm.get('title')?.touched" class="text-danger small mt-1">
+                                Headline is required (5-100 chars).
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label for="description" class="form-label fw-bold text-uppercase small text-muted">
+                                Full Report (Caption) <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" id="description" rows="6" formControlName="description" placeholder="Describe the context of the images..."></textarea>
+                            <div class="d-flex justify-content-between mt-1">
+                                <small class="text-muted">Word Count: {{ wordCount }} (min 10 chars)</small>
+                            </div>
+                            <div *ngIf="uploadForm.get('description')?.invalid && uploadForm.get('description')?.touched" class="text-danger small mt-1">
+                                Description is too short.
+                            </div>
+                        </div>
+
+                        <!-- News Image Upload -->
+                        <div class="mb-4">
+                            <label for="imageFiles" class="form-label fw-bold text-uppercase small text-muted">
+                                News Images (Up to 5) <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group input-group-lg">
+                                <input type="file" class="form-control" id="imageFiles" accept="image/*" multiple (change)="onImagesSelected($event)">
+                            </div>
+                            <small class="text-muted d-block mt-1"><i class="bi bi-info-circle me-1"></i>High-resolution images preferred. You can select multiple images.</small>
+
+                            <!-- Multiple Previews -->
+                            <div *ngIf="imagePreviewUrls.length > 0" class="mt-3 bg-light rounded p-3 border">
+                                <div class="row g-2">
+                                    <div class="col-4 col-md-2" *ngFor="let url of imagePreviewUrls">
+                                        <div class="position-relative">
+                                            <img [src]="url" class="img-fluid rounded shadow-sm border" style="height: 100px; width: 100%; object-fit: cover;" alt="News Preview">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tags -->
+                        <div class="mb-4">
+                            <label for="tags" class="form-label fw-bold text-uppercase small text-muted">Keywords</label>
+                            <input type="text" class="form-control" id="tags" formControlName="tags" placeholder="e.g. politics, metro, event">
+                        </div>
+
+                        <!-- News Location Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-uppercase small text-muted">News Location <span class="text-danger">*</span></label>
+                            <div class="row g-2">
+                                <div class="col-md-4">
+                                    <select class="form-select" formControlName="country">
+                                        <option value="" disabled>Select Country</option>
+                                        <option value="Global">Global</option>
+                                        <option value="India">India</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" *ngIf="uploadForm.get('country')?.value === 'India'">
+                                    <select class="form-select" formControlName="state">
+                                        <option value="" disabled>Select State</option>
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Telangana">Telangana</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" *ngIf="uploadForm.get('state')?.value">
+                                    <select class="form-select" formControlName="district">
+                                        <option value="" disabled>Select District</option>
+                                        <option *ngFor="let district of availableDistricts" [value]="district">{{ district }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-2 p-2 bg-light border rounded" *ngIf="formattedAddress">
+                                <small class="text-muted fw-bold">Selected Location: </small>
+                                <span class="text-danger fw-bold">{{ formattedAddress }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Categories -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-uppercase small text-muted">Category <span class="text-danger">*</span></label>
+                            <button type="button" class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center mb-2" (click)="toggleCategories()">
+                                <span *ngIf="!uploadForm.get('categories')?.value">Select Category</span>
+                                <span *ngIf="uploadForm.get('categories')?.value" class="fw-bold text-dark">{{ getSelectedCategoryLabel() }}</span>
+                                <i class="bi" [class.bi-chevron-down]="!showCategories" [class.bi-chevron-up]="showCategories"></i>
+                            </button>
+                            <div class="card bg-light border-0" *ngIf="showCategories">
+                                <div class="card-body">
+                                    <div class="row g-2">
+                                        <div class="col-6 col-md-4" *ngFor="let cat of categoryList">
+                                            <div class="form-check p-2 bg-white rounded border shadow-sm h-100">
+                                                <input class="form-check-input ms-1" type="radio" formControlName="categories" [id]="cat.value" [value]="cat.value" (click)="toggleCategories()">
+                                                <label class="form-check-label ms-1 text-truncate" [for]="cat.value">{{ cat.label }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terms -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="terms" formControlName="terms">
+                                <label class="form-check-label small" for="terms">
+                                    I agree to the Terms of Service and confirm these images are factual and original.
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-danger btn-lg py-3 fw-bold shadow-sm">
+                                <i class="bi bi-send me-2"></i>Submit Image News
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

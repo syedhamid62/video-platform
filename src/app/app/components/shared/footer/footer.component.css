@@ -1,0 +1,105 @@
+/* footer.component.css - Fixed dark theme readability */
+
+/* General footer background */
+.footer {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+/* Card styling - Dark background, white/light text */
+.transition-card {
+  background-color: #212529 !important; /* Dark gray/black */
+  color: #f8f9fa !important;           /* Light gray/white text */
+  border: 1px solid #343a40 !important; /* Subtle border */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px !important;
+}
+
+.transition-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Headings inside cards */
+.transition-card h5,
+.transition-card h4 {
+  color: #ffffff !important; /* Pure white for headings */
+  border-bottom: 2px solid #0d6efd;
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+/* Links inside cards */
+.transition-card a {
+  color: #e9ecef !important; /* Light gray for links */
+  text-decoration: none;
+}
+
+.transition-card a:hover {
+  color: #0d6efd !important; /* Blue accent on hover */
+  text-decoration: underline;
+}
+
+/* Social icons - Dark theme friendly */
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08); /* Subtle dark bg */
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: #ffffff !important;
+}
+
+.social-links a:hover {
+  background-color: rgba(13, 110, 253, 0.3); /* Blue tint on hover */
+  transform: scale(1.1);
+}
+
+/* Icons inside social links */
+.social-links i {
+  font-size: 1.3rem;
+}
+
+/* Newsletter input group - Dark theme */
+.input-group .form-control {
+  background-color: #343a40;
+  border: 1px solid #495057;
+  color: #f8f9fa;
+}
+
+.input-group .form-control::placeholder {
+  color: #adb5bd;
+}
+
+.input-group .btn {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .social-links {
+    justify-content: center;
+  }
+  
+  .social-links a {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .footer-bottom p {
+    font-size: 0.9rem;
+  }
+  
+  .card-body {
+    padding: 1.25rem !important;
+  }
+}
+
+/* Extra readability for small text */
+.text-muted {
+  color: #adb5bd !important; /* Lighter gray for muted text */
+}

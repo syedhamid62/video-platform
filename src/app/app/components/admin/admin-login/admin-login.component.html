@@ -1,0 +1,58 @@
+<div class="admin-login-container">
+  <div class="card login-card">
+    <!-- Dark Red Header -->
+    <div class="card-header">
+      <h2 class="card-title mb-0"><i class="bi bi-shield-lock-fill me-2"></i>Admin Access</h2>
+      <p class="card-subtitle mt-1">Authorized Personnel Only</p>
+    </div>
+
+    <div class="card-body">
+      <form (ngSubmit)="login()">
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label for="username" class="form-label">Administrator ID <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person-badge-fill"></i></span>
+            <input type="email" class="form-control" id="username" [(ngModel)]="username" name="username" required
+              placeholder="admin@am5tv.com">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4">
+          <label for="password" class="form-label">Security Key <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
+            <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required
+              placeholder="••••••••">
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid gap-2 mb-4">
+          <button type="submit" class="btn btn-primary btn-lg shadow-sm" [disabled]="isLoading">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+              aria-hidden="true"></span>
+            {{ isLoading ? 'Authenticating...' : 'Authenticate' }}
+          </button>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          <div>{{ errorMessage }}</div>
+        </div>
+
+        <!-- Setup (Hidden/Small) -->
+        <div class="text-center mt-3 pt-3 border-top">
+          <button type="button" class="btn btn-outline-secondary btn-sm border-0" (click)="createDefaultAdmin()"
+            [disabled]="isLoading">
+            <i class="bi bi-gear-fill me-1"></i> Initialize System
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

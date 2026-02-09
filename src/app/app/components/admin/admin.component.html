@@ -1,0 +1,348 @@
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0 fw-bold"><i class="bi bi-shield-lock me-2"></i>Admin Dashboard</h1>
+    <button class="btn btn-outline-danger" (click)="logout()">
+      <i class="bi bi-box-arrow-right me-2"></i>Logout
+    </button>
+  </div>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'videos'" (click)="switchTab('videos')"
+        href="javascript:void(0)">
+        <i class="bi bi-play-btn me-2"></i>Video Verification
+        <span class="badge bg-danger ms-2" *ngIf="pendingVideos.length > 0">{{ pendingVideos.length }}</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'image-news'" (click)="switchTab('image-news')"
+        href="javascript:void(0)">
+        <i class="bi bi-camera me-2"></i>Image Verification
+        <span class="badge bg-primary ms-2" *ngIf="pendingImageNews.length > 0">{{ pendingImageNews.length }}</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'users'" (click)="switchTab('users')" href="javascript:void(0)">
+        <i class="bi bi-people me-2"></i>User Management
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'reports'" (click)="switchTab('reports')" href="javascript:void(0)">
+        <i class="bi bi-flag me-2"></i>Reports
+        <span class="badge bg-warning ms-2" *ngIf="reports.length > 0">{{ reports.length }}</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'all-content'" (click)="switchTab('all-content')" href="javascript:void(0)">
+        <i class="bi bi-collection me-2"></i>Global Content
+      </a>
+    </li>
+  </ul>
+
+  <!-- Videos Tab -->
+  <div *ngIf="activeTab === 'videos'">
+    <div class="alert alert-info" *ngIf="pendingVideos.length === 0">
+      <i class="bi bi-info-circle me-2"></i>No pending videos to verify.
+    </div>
+
+    <div class="table-responsive" *ngIf="pendingVideos.length > 0">
+      <table class="table table-hover align-middle shadow-sm border">
+        <thead class="table-dark">
+          <tr>
+            <th>Type</th>
+            <th>Thumbnail</th>
+            <th>Headline / Title</th>
+            <th>Details</th>
+            <th>Reporter</th>
+            <th>Submitted On</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let video of pendingVideos">
+            <td class="text-center">
+                <i class="bi" 
+                   [class.bi-camera-video-fill]="!video.contentType || video.contentType === 'VIDEO'" 
+                   [class.bi-image]="video.contentType === 'IMAGE'"
+                   [class.text-primary]="!video.contentType || video.contentType === 'VIDEO'"
+                   [class.text-danger]="video.contentType === 'IMAGE'"
+                   style="font-size: 1.5rem;"></i>
+            </td>
+            <td>
+              <img [src]="video.thumbnailUrl || video.thumbnail" alt="Thumbnail" class="rounded"
+                style="width: 120px; height: 70px; object-fit: cover;" />
+            </td>
+            <td>
+              <h6 class="mb-1 fw-bold">{{ video.title }}</h6>
+              <small class="text-muted d-block text-truncate" style="max-width: 250px;">{{ video.description }}</small>
+            </td>
+            <td>
+              <div class="small">
+                <div *ngIf="video.location"><strong>Loc:</strong> {{ video.location }}</div>
+                <div *ngIf="video.categories"><strong>Cat:</strong> {{ video.categories }}</div>
+                <div *ngIf="video.tags"><strong>Tags:</strong> {{ video.tags }}</div>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-person-circle me-2 text-muted h5 mb-0"></i>
+                <div>
+                  <div class="fw-medium">{{ video.user?.username || video.user?.email || 'Unknown' }}</div>
+                  <small class="text-muted">ID: {{ video.user?.id }}</small>
+                </div>
+              </div>
+            </td>
+            <td>
+              {{ video.createdAt | date:'short' }}
+            </td>
+            <td class="text-end">
+              <button class="btn btn-success btn-sm me-2" (click)="approve(video.id)" title="Approve">
+                <i class="bi bi-check-lg"></i> Approve
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="reject(video.id)" title="Reject">
+                <i class="bi bi-x-lg"></i> Reject
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Image News Tab -->
+  <div *ngIf="activeTab === 'image-news'">
+    <div class="alert alert-info" *ngIf="pendingImageNews.length === 0">
+      <i class="bi bi-info-circle me-2"></i>No pending image news to verify.
+    </div>
+
+    <div class="table-responsive" *ngIf="pendingImageNews.length > 0">
+      <table class="table table-hover align-middle shadow-sm border">
+        <thead class="table-info">
+          <tr>
+            <th>Images</th>
+            <th>Headline</th>
+            <th>Location / Info</th>
+            <th>Reporter</th>
+            <th>Submitted On</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let news of pendingImageNews">
+            <td>
+              <div class="d-flex gap-1 overflow-auto" style="max-width: 200px;">
+                <img *ngFor="let url of news.urls" [src]="url" class="rounded border" 
+                     style="width: 60px; height: 40px; object-fit: cover;" alt="News preview">
+              </div>
+              <small class="text-muted">{{ news.urls.length }} images</small>
+            </td>
+            <td>
+              <h6 class="mb-1 fw-bold">{{ news.title }}</h6>
+              <small class="text-muted d-block text-truncate" style="max-width: 250px;">{{ news.description }}</small>
+            </td>
+            <td>
+              <div class="small">
+                <div *ngIf="news.location"><strong>Loc:</strong> {{ news.location }}</div>
+                <div *ngIf="news.tags"><strong>Tags:</strong> {{ news.tags }}</div>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-person-circle me-2 text-muted h5 mb-0"></i>
+                <div class="fw-medium">{{ news.user?.username || news.user?.email || 'Unknown' }}</div>
+              </div>
+            </td>
+            <td>
+              {{ news.createdAt | date:'short' }}
+            </td>
+            <td class="text-end">
+              <button class="btn btn-success btn-sm me-2" (click)="approveImageNews(news.id)" title="Approve">
+                <i class="bi bi-check-lg"></i> Approve
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="rejectImageNews(news.id)" title="Reject">
+                <i class="bi bi-x-lg"></i> Reject
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Users Tab -->
+  <div *ngIf="activeTab === 'users'">
+    
+    <!-- User Search -->
+    <div class="mb-4 d-flex gap-2 p-3 bg-light rounded shadow-sm">
+        <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0" placeholder="Search by username, email, contact..." 
+                   [(ngModel)]="searchQuery" (keyup.enter)="onSearchUser()">
+            <button class="btn btn-outline-secondary" *ngIf="searchQuery" (click)="searchQuery=''; fetchUsers()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <button class="btn btn-primary px-4" (click)="onSearchUser()">Search</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle shadow-sm border bg-white">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.id }}</td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <img [src]="user.profilePictureUrl || 'https://placehold.co/40x40'" 
+                         class="rounded-circle me-2 border" style="width: 32px; height: 32px; object-fit: cover;">
+                    <strong>{{ user.displayUsername || user.username }}</strong>
+                </div>
+            </td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.contactNumber || 'N/A' }}</td>
+            <td>
+              <span class="badge" [class.bg-success]="user.isActive" [class.bg-danger]="!user.isActive">
+                {{ user.isActive ? 'Active' : 'Blocked' }}
+              </span>
+            </td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm">
+                <button class="btn" [class.btn-outline-warning]="user.isActive"
+                  [class.btn-outline-success]="!user.isActive" (click)="toggleUserStatus(user.id, user.isActive)"
+                  [disabled]="user.role === 'ADMIN'">
+                  <i class="bi" [class.bi-ban]="user.isActive" [class.bi-check-circle]="!user.isActive"></i>
+                  {{ user.isActive ? 'Block' : 'Unblock' }}
+                </button>
+                <button class="btn btn-outline-danger" (click)="deleteUser(user.id)" [disabled]="user.role === 'ADMIN'">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Reports Tab -->
+  <div *ngIf="activeTab === 'reports'">
+    <div class="alert alert-info" *ngIf="reports.length === 0">
+      <i class="bi bi-info-circle me-2"></i>No active reports to review.
+    </div>
+
+    <div class="table-responsive" *ngIf="reports.length > 0">
+      <table class="table table-hover align-middle shadow-sm border bg-white">
+        <thead class="table-dark">
+          <tr>
+            <th>Date</th>
+            <th>Reported By</th>
+            <th>Content Path</th>
+            <th>Reason</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of reports">
+            <td class="small">{{ report.createdAt | date:'short' }}</td>
+            <td class="small text-muted">{{ report.user?.username }} (ID: {{ report.user?.id }})</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <img [src]="report.video?.thumbnailUrl || report.video?.thumbnail || 'https://placehold.co/100x60'" 
+                     class="rounded me-2 border" style="width: 80px; height: 45px; object-fit: cover;">
+                <div>
+                    <div class="fw-bold small">{{ report.video?.title }}</div>
+                    <small class="text-muted">By {{ report.video?.user?.username }}</small>
+                </div>
+              </div>
+            </td>
+            <td class="small text-danger fw-bold">{{ report.reason }}</td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-danger" (click)="deleteVideo(report.video?.id)" title="Delete Reported Content">
+                  <i class="bi bi-trash"></i> Delete Content
+                </button>
+                <button class="btn btn-outline-secondary" (click)="deleteReport(report.id)" title="Dismiss Report">
+                  <i class="bi bi-check-circle"></i> Dismiss
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Global Content Tab -->
+  <div *ngIf="activeTab === 'all-content'">
+    <div class="mb-4 d-flex gap-2 p-3 bg-light rounded shadow-sm">
+        <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0" placeholder="Search by title, description, or username..." 
+                   [(ngModel)]="contentSearchQuery" (keyup.enter)="onSearchContent()">
+        </div>
+        <button class="btn btn-dark px-4" (click)="onSearchContent()">Find Content</button>
+    </div>
+
+    <div class="table-responsive" *ngIf="allContent.length > 0">
+      <table class="table table-hover align-middle shadow-sm border bg-white">
+        <thead class="table-dark">
+          <tr>
+            <th>Type</th>
+            <th>Thumbnail</th>
+            <th>Headline</th>
+            <th>Reporter/Owner</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of allContent">
+            <td>
+                <i class="bi" 
+                   [class.bi-camera-video-fill]="item.contentType === 'VIDEO'" 
+                   [class.bi-image]="item.contentType === 'IMAGE'"></i>
+            </td>
+            <td>
+              <img [src]="item.thumbnailUrl || item.thumbnail" class="rounded"
+                style="width: 80px; height: 45px; object-fit: cover;" />
+            </td>
+            <td>
+              <h6 class="mb-0 small fw-bold">{{ item.title }}</h6>
+              <small class="text-muted d-block text-truncate" style="max-width: 200px;">{{ item.description }}</small>
+            </td>
+            <td>
+              <div class="small fw-medium">{{ item.user?.username }}</div>
+              <small class="text-muted">ID: {{ item.user?.id }}</small>
+            </td>
+            <td>
+              <span class="badge small" 
+                    [class.bg-success]="item.status === 'APPROVED'" 
+                    [class.bg-warning]="item.status === 'PENDING'"
+                    [class.bg-danger]="item.status === 'REJECTED'">
+                {{ item.status }}
+              </span>
+            </td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteVideo(item.id)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="allContent.length === 0 && contentSearchQuery" class="text-center py-5 text-muted">
+        No content found matching "{{ contentSearchQuery }}"
+    </div>
+  </div>
+</div>

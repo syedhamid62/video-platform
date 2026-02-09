@@ -1,0 +1,158 @@
+<div class="register-container">
+  <div class="card register-card">
+    <!-- Red Header -->
+    <div class="card-header">
+      <h2 class="card-title mb-0"><i class="bi bi-person-plus-fill me-2"></i>{{ 'AUTH.REGISTER_TITLE' | translate }}
+      </h2>
+      <p class="card-subtitle mt-1 text-white-50">{{ 'AUTH.REGISTER_SUBTITLE' | translate }}</p>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'AUTH.EMAIL_LABEL' | translate }} <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+            <input type="email" class="form-control" formControlName="email"
+              [placeholder]="'AUTH.EMAIL_PLACEHOLDER' | translate" [readonly]="otpSent">
+          </div>
+          <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+            class="text-danger small mt-1">
+            <div *ngIf="registerForm.get('email')?.hasError('required')">{{ 'AUTH.EMAIL_REQUIRED' | translate }}</div>
+            <div *ngIf="registerForm.get('email')?.hasError('email')">{{ 'AUTH.EMAIL_INVALID' | translate }}</div>
+          </div>
+        </div>
+
+        <!-- Username -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'AUTH.USERNAME_LABEL' | translate }} <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" class="form-control" formControlName="username"
+              [placeholder]="'AUTH.USERNAME_PLACEHOLDER' | translate" [readonly]="otpSent">
+          </div>
+          <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+            class="text-danger small mt-1">
+            <div *ngIf="registerForm.get('username')?.hasError('required')">{{ 'AUTH.USERNAME_REQUIRED' | translate }}
+            </div>
+            <div *ngIf="registerForm.get('username')?.hasError('minlength')">{{ 'AUTH.USERNAME_MIN_LENGTH' | translate
+              }}</div>
+          </div>
+        </div>
+
+        <!-- Name Fields (2 Col) -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label">{{ 'AUTH.FIRST_NAME_LABEL' | translate }} <span
+                class="text-danger">*</span></label>
+            <input type="text" class="form-control" formControlName="firstName"
+              [placeholder]="'AUTH.FIRST_NAME_PLACEHOLDER' | translate" [readonly]="otpSent">
+            <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
+              class="text-danger small mt-1">
+              {{ 'AUTH.FIRST_NAME_REQUIRED' | translate }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ 'AUTH.LAST_NAME_LABEL' | translate }} <span
+                class="text-danger">*</span></label>
+            <input type="text" class="form-control" formControlName="lastName"
+              [placeholder]="'AUTH.LAST_NAME_PLACEHOLDER' | translate" [readonly]="otpSent">
+            <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+              class="text-danger small mt-1">
+              {{ 'AUTH.LAST_NAME_REQUIRED' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Number -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'AUTH.CONTACT_NUMBER_LABEL' | translate }} <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+            <input type="text" class="form-control" formControlName="contactNumber"
+              [placeholder]="'AUTH.CONTACT_NUMBER_PLACEHOLDER' | translate" [readonly]="otpSent">
+          </div>
+          <div *ngIf="registerForm.get('contactNumber')?.invalid && registerForm.get('contactNumber')?.touched"
+            class="text-danger small mt-1">
+            <div *ngIf="registerForm.get('contactNumber')?.hasError('required')">{{ 'AUTH.CONTACT_NUMBER_REQUIRED' | translate }}</div>
+            <div *ngIf="registerForm.get('contactNumber')?.hasError('pattern')">{{ 'AUTH.CONTACT_NUMBER_INVALID' | translate }}</div>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'AUTH.PASSWORD_LABEL' | translate }} <span class="text-danger">*</span></label>
+          <div class="input-group">
+            <input [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="password"
+              [placeholder]="'AUTH.CREATE_PASSWORD_PLACEHOLDER' | translate" [readonly]="otpSent">
+            <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility('password')">
+              <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+            </button>
+          </div>
+          <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+            class="text-danger small mt-1">
+            <div *ngIf="registerForm.get('password')?.hasError('required')">{{ 'AUTH.PASSWORD_REQUIRED' | translate }}
+            </div>
+            <div *ngIf="registerForm.get('password')?.hasError('minlength')">{{ 'AUTH.PASSWORD_MIN_LENGTH' | translate
+              }}</div>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-3">
+          <label class="form-label">{{ 'AUTH.CONFIRM_PASSWORD_LABEL' | translate }} <span
+              class="text-danger">*</span></label>
+          <div class="input-group">
+            <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-control"
+              formControlName="confirmPassword" [placeholder]="'AUTH.CONFIRM_PASSWORD_PLACEHOLDER' | translate"
+              [readonly]="otpSent">
+            <button class="btn btn-outline-secondary" type="button"
+              (click)="togglePasswordVisibility('confirmPassword')">
+              <i class="bi" [class.bi-eye]="!showConfirmPassword" [class.bi-eye-slash]="showConfirmPassword"></i>
+            </button>
+          </div>
+          <div *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched"
+            class="text-danger small mt-1">
+            {{ 'AUTH.PASSWORDS_MISMATCH' | translate }}
+          </div>
+        </div>
+
+        <!-- OTP Field (Conditional) -->
+        <div class="mb-4" *ngIf="showOtpField">
+          <div class="alert alert-warning border-0 d-flex align-items-center mb-2">
+            <i class="bi bi-shield-lock me-2 fs-5"></i>
+            <div>{{ 'AUTH.VERIFICATION_CODE_SENT' | translate }}</div>
+          </div>
+          <label class="form-label">{{ 'AUTH.VERIFICATION_CODE_LABEL' | translate }}</label>
+          <input type="text" class="form-control form-control-lg text-center fw-bold letter-spacing-2"
+            formControlName="otp" [placeholder]="'AUTH.VERIFICATION_CODE_PLACEHOLDER' | translate" maxlength="6">
+          <div *ngIf="registerForm.get('otp')?.invalid && registerForm.get('otp')?.touched"
+            class="text-danger small mt-1">
+            {{ 'AUTH.VERIFICATION_CODE_REQUIRED' | translate }}
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-danger btn-lg shadow-sm"
+            [disabled]="loading || (registerForm.invalid && !otpSent)">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <span *ngIf="!loading">
+              {{ otpSent ? ('AUTH.VERIFY_AND_REGISTER_BTN' | translate) : ('AUTH.SEND_VERIFICATION_CODE_BTN' |
+              translate) }}
+            </span>
+          </button>
+        </div>
+
+        <!-- Login Link -->
+        <div class="login-link">
+          <span>{{ 'AUTH.ALREADY_HAVE_ACCOUNT' | translate }} </span>
+          <a (click)="navigateToLogin()">{{ 'AUTH.SIGN_IN_LINK' | translate }}</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

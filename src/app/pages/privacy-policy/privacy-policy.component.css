@@ -1,0 +1,20 @@
+.privacy-content, .terms-content {
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+h4 {
+  color: #0d6efd;
+  border-bottom: 2px solid #0d6efd;
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+@media (max-width: 576px) {
+  h1.display-5 {
+    font-size: 2.5rem;
+  }
+  .card-body {
+    padding: 1.5rem !important;
+  }
+}

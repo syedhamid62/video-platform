@@ -1,0 +1,226 @@
+.home-page {
+  /* Background managed globally */
+  /* Cleaner white/grey for news feel */
+}
+
+/* News Section Headings */
+.news-section-title {
+  border-left: 5px solid var(--brand-primary);
+  padding-left: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+  color: var(--brand-primary);
+}
+
+.hero {
+  min-height: 70vh;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.hero>* {
+  position: relative;
+  z-index: 2;
+}
+
+.video-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 4px;
+  /* Sharper corners for news */
+  border: 1px solid #eee;
+  background: white;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+  border-color: var(--brand-secondary) !important;
+}
+
+.play-overlay {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.video-card:hover .play-overlay {
+  opacity: 1;
+}
+
+.play-overlay i {
+  filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.7));
+}
+
+.sticky-top {
+  z-index: 100;
+}
+
+/* Flash News Scrollable Area */
+.flash-news-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background: white;
+}
+
+/* Square Ad Slots */
+.ad-square {
+  width: 200px;
+  height: 200px;
+  background-color: #f0f0f0;
+  border: 1px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.ad-square::before {
+  content: 'AD';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 10px;
+  padding: 2px 4px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.ad-square img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 991px) {
+  .sticky-top {
+    position: relative;
+    top: 0;
+  }
+
+  .hero {
+    min-height: 50vh;
+  }
+}
+
+/* Filter buttons active state */
+.btn-outline-primary.active {
+  background-color: var(--brand-primary, #9F221C);
+  color: white !important;
+  border-color: var(--brand-primary, #9F221C);
+}
+
+/* Carousel controls */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+  opacity: 0.7;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 20px;
+}
+
+/* Only district dropdowns get scrollbar */
+.dropdown-menu.scrollable-dropdown {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+/* Compact Card Styles for 4-column layout */
+.video-card .card-title {
+  font-size: 0.9rem;
+  /* Smaller title */
+  line-height: 1.2;
+}
+
+.video-card .card-text {
+  font-size: 0.75rem;
+  /* Smaller meta text */
+}
+
+.video-card .btn {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+
+/* Ad Card Specific Sizing */
+.ad-card .card-img-top {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 0.8rem;
+}
+
+/* Horizontal Scroll for Categories */
+.horizontal-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 5px;
+  /* Added side padding */
+  gap: 12px;
+  scrollbar-width: none;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.tag-btn {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  color: #333;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Soft shadow like Aaj Tak */
+}
+
+.tag-btn:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tag-btn.active {
+  background: #ed1c24;
+  /* Red active state */
+  color: white;
+  border-color: #ed1c24;
+  box-shadow: 0 4px 8px rgba(237, 28, 36, 0.3);
+}
+
+.tag-btn.active:hover {
+  background: #cc0000;
+}

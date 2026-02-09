@@ -1,0 +1,98 @@
+<div class="container-fluid bg-light py-4 min-vh-100">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
+      <div>
+        <h1 class="fw-bold text-dark mb-1">
+          <span class="text-danger border-start border-4 border-danger ps-3">{{ 'LATEST_NEWS' | translate }}</span>
+        </h1>
+        <p class="text-muted mb-0 ms-4">{{ 'DISCOVER_MORE_STORIES' | translate }}</p>
+      </div>
+
+      <div class="d-flex gap-2">
+        <div class="btn-group shadow-sm">
+          <button class="btn btn-outline-danger" [class.active]="selectedScope === 'global'"
+            (click)="setScope('global')">{{ 'GLOBAL' | translate }}</button>
+          <button class="btn btn-outline-danger" [class.active]="selectedScope === 'india'"
+            (click)="setScope('india')">{{ 'INDIA' | translate }}</button>
+        </div>
+        <select class="form-select shadow-sm w-auto" (change)="setCategory($any($event.target).value)">
+          <option value="all">{{ 'ALL_CATEGORIES' | translate }}</option>
+          <option value="politics">{{ 'POLITICS' | translate }}</option>
+          <option value="sports">{{ 'SPORTS' | translate }}</option>
+          <option value="entertainment">{{ 'ENTERTAINMENT' | translate }}</option>
+          <option value="technology">{{ 'TECHNOLOGY' | translate }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Combined News Grid -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" *ngIf="filteredVideos.length > 0">
+      <div class="col" *ngFor="let item of filteredVideos">
+        <div class="card h-100 border-0 shadow-sm overflow-hidden news-card hover-lift"
+          [routerLink]="item.isImageNews ? ['/image-news', item.id] : ['/video', item.id]" style="cursor: pointer;">
+          <div class="position-relative">
+            <!-- Dynamic Image Swapping for Image News -->
+            <img [src]="getDisplayUrl(item)" class="card-img-top" alt="{{item.title}}"
+              style="height: 200px; object-fit: cover; transition: opacity 0.5s ease-in-out;">
+            
+            <div class="position-absolute bottom-0 end-0 m-2">
+              <span *ngIf="!item.isImageNews" class="badge bg-dark bg-opacity-75 text-white small px-2 py-1">
+                <i class="bi bi-play-fill me-1"></i>Watch
+              </span>
+              <span *ngIf="item.isImageNews" class="badge bg-primary bg-opacity-75 text-white small px-2 py-1">
+                <i class="bi bi-camera-fill me-1"></i>Photos ({{ item.urls?.length }})
+              </span>
+            </div>
+            
+            <!-- Indicators for Image News -->
+            <div *ngIf="item.isImageNews && item.urls?.length > 1" class="position-absolute bottom-0 start-50 translate-middle-x mb-2 d-flex gap-1">
+              <div *ngFor="let url of item.urls; let i = index" 
+                class="carousel-indicator-dot"
+                [class.active]="currentImageIndexes[item.id] === i">
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-3">
+            <h6 class="card-title fw-bold text-dark line-clamp-2 mb-2">{{ item.title }}</h6>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <small class="text-muted"><i class="bi bi-clock me-1"></i>{{ item.createdAt | date:'MMM d, y' }}</small>
+              <span class="badge bg-danger-subtle text-danger small px-2 py-1 text-uppercase fw-bold"
+                style="font-size: 0.65rem;">
+                {{ item.isImageNews ? 'Photo News' : 'Video' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Results -->
+    <div class="text-center py-5" *ngIf="filteredVideos.length === 0">
+      <div class="mb-3 text-muted opacity-50">
+        <i class="bi bi-newspaper" style="font-size: 4rem;"></i>
+      </div>
+      <h3 class="fw-bold">{{ 'NO_NEWS_AVAILABLE' | translate }}</h3>
+      <p class="text-muted">Try changing your filters or check back later.</p>
+    </div>
+
+    <!-- Side-by-Side Ad Slots -->
+    <div class="row g-4 mt-5 pt-5 border-top">
+      <div class="col-md-6" *ngFor="let ad of ads">
+        <div class="card ad-card border-0 shadow-sm overflow-hidden h-100">
+          <div class="row g-0 h-100">
+            <div class="col-4">
+              <img [src]="ad.thumbnail" class="img-fluid h-100 w-100" style="object-fit: cover;" alt="Ad">
+            </div>
+            <div class="col-8">
+              <div class="card-body bg-white d-flex flex-column justify-content-center">
+                <span class="badge bg-warning text-dark mb-1 w-fit-content" style="width: fit-content;">{{ 'SPONSORED' | translate }}</span>
+                <h5 class="fw-bold mb-1">Advertise with AM5TV</h5>
+                <p class="text-muted small mb-0">Reach millions of daily viewers globally.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

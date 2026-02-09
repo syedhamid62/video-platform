@@ -1,0 +1,255 @@
+<div class="home-page">
+
+
+  <!-- Filters / Categories (Aaj Tak Style Horizontal Scroll) -->
+  <div class="container my-4">
+    <div class="d-flex align-items-center">
+      <div class="horizontal-scroll-container flex-grow-1">
+        <!-- Global / India Toggle -->
+        <button class="tag-btn" [class.active]="selectedScope === 'global'" (click)="setScope('global')">
+          {{ 'GLOBAL' | translate }}
+        </button>
+        <button class="tag-btn" [class.active]="selectedScope === 'india'" (click)="setScope('india')">
+          {{ 'INDIA' | translate }}
+        </button>
+
+        <!-- Vertical Divider -->
+        <div style="width: 1px; background: #ddd; margin: 0 5px;"></div>
+
+        <!-- Dynamic Categories -->
+        <button class="tag-btn" *ngFor="let cat of visibleCategories" [class.active]="selectedCategory === cat.id"
+          (click)="setCategory(cat.id)">
+          {{ cat.label | translate }}
+        </button>
+      </div>
+
+      <!-- See More Dropdown (Outside Scroll Container) -->
+      <div class="dropdown ms-2 flex-shrink-0" *ngIf="moreCategories.length > 0">
+        <button class="tag-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+          style="display: flex; align-items: center;">
+          {{ 'MORE' | translate }}
+        </button>
+        <ul class="dropdown-menu shadow-sm scrollable-dropdown dropdown-menu-end">
+          <li *ngFor="let cat of moreCategories">
+            <a class="dropdown-item" [class.active]="selectedCategory === cat.id" (click)="setCategory(cat.id)"
+              style="cursor: pointer;">
+              {{ cat.label | translate }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- State & District Filters (Only visible if India is selected) -->
+    <!-- Kept as dropdowns for functionality but styled slightly better if needed, or moved below -->
+    <div class="d-flex flex-wrap gap-3 mt-3" *ngIf="selectedScope === 'india'">
+      <div class="dropdown">
+        <button class="tag-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          {{ selectedState || ('SELECT_STATE' | translate) }}
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" (click)="setState('Andhra Pradesh')">Andhra Pradesh</a></li>
+          <li><a class="dropdown-item" (click)="setState('Telangana')">Telangana</a></li>
+        </ul>
+      </div>
+      <div class="dropdown" *ngIf="selectedState">
+        <button class="tag-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          {{ selectedDistrict || ('SELECT_DISTRICT' | translate) }}
+        </button>
+        <ul class="dropdown-menu scrollable-dropdown">
+          <li *ngFor="let district of getDistricts()">
+            <a class="dropdown-item" (click)="setDistrict(district)">{{district}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <div class="row g-4">
+      <!-- Main Content Column -->
+      <div class="col-lg-8">
+        <!-- Featured Breaking News Section -->
+        <div class="mb-5" *ngIf="videos.length > 0">
+          <h2 class="news-section-title">{{ 'FEATURED_STORY' | translate }}</h2>
+          <div class="card border-0 shadow-sm overflow-hidden position-relative featured-card"
+            [routerLink]="['/video', videos[0].id]"
+            style="cursor: pointer; min-height: 400px; background-size: cover; background-position: center; border-radius: 8px;"
+            [style.backgroundImage]="'linear-gradient(to top, rgba(0,0,0,0.9), transparent), url(' + getThumbnailUrl(videos[0]) + ')'">
+            <div class="position-absolute bottom-0 start-0 p-4 w-100">
+              <span class="badge bg-danger mb-2 px-3 py-2 text-uppercase fw-bold">{{ 'BREAKING' | translate }}</span>
+              <h1 class="text-white fw-bold mb-2">{{videos[0].title}}</h1>
+              <p class="text-light opacity-75 mb-0">{{videos[0].description | slice:0:150}}...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multiple News Sections (6 Sections, 3 Videos Each) -->
+        <div *ngFor="let section of videoSections" class="mb-5 bg-white p-3 rounded shadow-sm border">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-caret-right-fill text-danger fs-5 me-2"></i>
+            <h5 class="fw-bold text-uppercase mb-0" style="letter-spacing: 0.5px;">{{ section.title }}</h5>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-4" *ngFor="let video of section.videos">
+              <div class="card video-card border-0 h-100 shadow-none" [routerLink]="['/video', video.id]"
+                style="cursor: pointer; text-decoration: none;">
+                <div class="position-relative">
+                  <img [src]="getThumbnailUrl(video)" class="card-img-top rounded" alt="{{video.title}}"
+                    style="height: 160px; object-fit: cover;">
+                  <div class="play-overlay position-absolute bottom-0 end-0 m-2">
+                    <i class="bi bi-play-circle-fill text-danger bg-white rounded-circle fs-4"
+                      style="line-height:0;"></i>
+                  </div>
+                </div>
+                <div class="card-body px-0 py-2">
+                  <h6 class="card-title fw-bold mb-0 text-dark" style="font-size: 0.9rem; line-height: 1.4;">
+                    {{ video.title }}
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Image News & Ad Section (Alternating) -->
+        <h2 class="news-section-title mt-5">VISUAL STORIES</h2>
+        <div class="row g-4 mb-5">
+          <ng-container *ngFor="let news of imageNews; let i = index">
+            <!-- News Card -->
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="position-relative">
+                  <img [src]="news.image" class="card-img-top" alt="{{news.title}}"
+                    style="height: 220px; object-fit: cover;">
+                  <span class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 small fw-bold mt-2 ms-2">
+                    {{ news.source }}
+                  </span>
+                </div>
+                <div class="card-body p-2">
+                  <h5 class="card-title fw-bold"
+                    style="line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                    {{ news.title }}</h5>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ad Box -->
+            <div class="col-md-6">
+              <div
+                class="card h-100 border-0 shadow-sm bg-light d-flex align-items-center justify-content-center text-center overflow-hidden position-relative">
+                <small class="d-block mb-1 text-uppercase fw-bold"
+                  style="font-size: 0.7rem; position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(255,255,255,0.8); padding: 2px 5px; border-radius: 4px;">Advertisement</small>
+                <img [src]="sidebarAdImages[(i + 3) % sidebarAdImages.length] || '/assets/placeholder-ad.jpg'"
+                  alt="Advertisement" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Load More Section (Always visible as per user request) -->
+        <div class="text-center mt-5 mb-5">
+          <a routerLink="/news" class="btn btn-outline-primary btn-lg px-5 py-3 fw-bold rounded-pill">
+            {{ 'LOAD_MORE' | translate }}
+          </a>
+        </div>
+      </div>
+
+      <!-- Sidebar Column -->
+      <div class="col-lg-4">
+        <div>
+
+          <!-- Sidebar: Flash News (Top Priority) -->
+          <h3 class="news-section-title mb-4" style="font-size: 1.25rem;">{{ 'FLASH_NEWS' | translate }}</h3>
+          <!-- Sidebar: Image News & Ads Pattern (User Requested) -->
+          <div class="sidebar-content-loop" *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7]">
+
+            <!-- VARIANT A: Split Columns (First 5 sections: Indices 0-4) -->
+            <div class="row g-2 mb-3" *ngIf="i <= 4">
+              <!-- Item A -->
+              <div class="col-6" *ngIf="sidebarNews[i*2]">
+                <div class="card border-0 shadow-sm text-white overflow-hidden h-100 bg-dark">
+                  <img [src]="sidebarNews[i*2].image || 'assets/placeholder-news.jpg'" class="card-img"
+                    style="opacity: 0.6; height: 210px; object-fit: cover;">
+                  <div class="card-img-overlay p-2 d-flex align-items-end">
+                    <small class="fw-bold lh-sm text-truncate" style="font-size: 0.75rem;">
+                      {{ sidebarNews[i*2].title }}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <!-- Item B -->
+              <div class="col-6" *ngIf="sidebarNews[i*2+1]">
+                <div class="card border-0 shadow-sm text-white overflow-hidden h-100 bg-dark">
+                  <img [src]="sidebarNews[i*2+1].image || 'assets/placeholder-news.jpg'" class="card-img"
+                    style="opacity: 0.6; height: 210px; object-fit: cover;">
+                  <div class="card-img-overlay p-2 d-flex align-items-end">
+                    <small class="fw-bold lh-sm text-truncate" style="font-size: 0.75rem;">
+                      {{ sidebarNews[i*2+1].title }}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- VARIANT B: Full Width (After 5th section: Indices 5-7) -->
+            <!-- Offset index: 10 used for split cols, so start from 10 -->
+            <div class="card border-0 shadow-sm text-white overflow-hidden bg-dark mb-3"
+              *ngIf="i > 4 && sidebarNews[10 + (i-5)]">
+              <img [src]="sidebarNews[10 + (i-5)].image || 'assets/placeholder-news.jpg'" class="card-img"
+                style="opacity: 0.6; height: 260px; object-fit: cover;">
+              <div class="card-img-overlay p-3 d-flex align-items-end">
+                <h6 class="fw-bold lh-sm mb-0">{{ sidebarNews[10 + (i-5)].title }}</h6>
+              </div>
+            </div>
+
+            <!-- 2. Full Width Ad Box (Hardcoded per slot) -->
+            <div
+              class="bg-light border border-secondary border-dashed p-3 text-center text-muted rounded mb-4 shadow-sm overflow-hidden position-relative">
+              <small class="d-block mb-1 text-uppercase fw-bold"
+                style="font-size: 0.7rem; position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(255,255,255,0.8); padding: 2px 5px; border-radius: 4px;">Advertisement</small>
+
+              <div [style.height]="i > 4 ? '200px' : '150px'"
+                class="d-flex align-items-center justify-content-center text-black-50 fw-bold overflow-hidden rounded">
+
+                <!-- FORCE TEST IMAGE - Remove if seen -->
+                <!-- <img src="assets/images/ad_images/ad_1.jpg" style="position:absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; z-index: 1;"> -->
+
+                <!-- Expanded Hardcoded Slots for User Editing -->
+                <!-- Slot 0 -->
+                <img *ngIf="i === 0" src="assets/images/content_images/img_1.jpg" alt="Sponsored"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+                <!-- Slot 1 -->
+                <img *ngIf="i === 1" src="assets/images/content_images/img_2.jpg" alt="Sponsored"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+                <!-- Slot 2 -->
+                <img *ngIf="i === 2" src="assets/images/content_images/img_3.jpg" alt="Sponsored"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+                <!-- Slot 3 -->
+                <img *ngIf="i === 3" src="assets/images/content_images/img_4.jpg" alt="Sponsored"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+                <!-- Slot 4 -->
+                <img *ngIf="i === 4" src="assets/images/content_images/img_5.jpg" alt="Sponsored"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+                <!-- Slot 5 -->
+                <img *ngIf="i === 5" src="assets/images/content_images/img_6.jpg" alt="Sponsored"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+                <!-- Slot 6 -->
+                <img *ngIf="i === 6" src="assets/images/content_images/img_7.jpg" alt="Sponsored"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+                <!-- Slot 7 -->
+                <img *ngIf="i === 7" src="assets/images/content_images/img_3.jpg" alt="Sponsored"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

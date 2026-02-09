@@ -1,0 +1,177 @@
+<!-- MAIN NEWS CONTAINER -->
+<div class="container-fluid px-4 my-4" *ngIf="video">
+
+   <!-- Breaking News Banner (Ticker Style) -->
+   <div class="row mb-3">
+      <div class="col-12">
+         <div class="bg-danger text-white py-2 px-3 d-flex align-items-center shadow-sm rounded-top"
+            style="background: linear-gradient(90deg, #d32f2f, #b71c1c);">
+            <span class="badge bg-white text-danger me-3 text-uppercase fw-bold px-3">Breaking</span>
+            <span class="fw-bold text-uppercase small" style="letter-spacing: 1px;">Live Report From AM5TV News
+               Desk</span>
+            <span class="ms-auto small opacity-75">{{ video.createdAt | date:'fullDate' }}</span>
+         </div>
+      </div>
+   </div>
+
+   <div class="row g-4 flex-lg-nowrap">
+
+      <!-- MAIN CONTENT (Left Column) -->
+      <div class="col-xl-8 col-lg-8">
+
+         <!-- Video Player Wrapper -->
+         <div class="video-wrapper mb-4">
+            <video [src]="videoStreamUrl" controls autoplay></video>
+         </div>
+
+         <!-- Article Header -->
+         <div class="border-bottom pb-3 mb-4">
+            <h1 class="display-6 fw-bold text-dark mb-3">
+               {{ video.title }}
+            </h1>
+
+            <!-- Author / Meta Line -->
+            <div class="meta-info">
+               <span class="text-danger fw-bold"><i class="bi bi-person-circle me-2"></i>By {{ video.user?.firstName ||
+                  video.user?.username || 'Staff Reporter' }}</span>
+               <span class="meta-divider">|</span>
+               <span><i class="bi bi-eye-fill me-1"></i>{{ (video.views || 0) | number }} Views</span>
+               <span class="meta-divider">|</span>
+               <span><i class="bi bi-clock-fill me-1"></i>{{ video.createdAt | date:'medium' }}</span>
+            </div>
+         </div>
+
+         <!-- Action Buttons -->
+         <div
+            class="d-flex justify-content-between align-items-center bg-light p-3 rounded mb-4 shadow-sm action-btn-group flex-wrap gap-3">
+            <div class="d-flex gap-3">
+               <button class="btn btn-outline-primary d-flex align-items-center gap-2" (click)="likeVideo()">
+                  <i class="bi bi-hand-thumbs-up" [class.text-primary]="video.likedByCurrentUser"></i>
+                  <span>{{ video.likesCount || 0 }}</span>
+               </button>
+               <button class="btn btn-outline-secondary d-flex align-items-center gap-2" (click)="shareVideo()">
+                  <i class="bi bi-share"></i>
+                  <span>{{ video.shareCount || 0 }}</span>
+               </button>
+               <button class="btn btn-outline-danger d-flex align-items-center gap-2" (click)="reportVideo()">
+                  <i class="bi bi-flag"></i>
+                  <span>Report</span>
+               </button>
+            </div>
+         </div>
+
+         <!-- Article Body -->
+         <div class="article-body">
+            <div class="p-4 bg-light border-start border-4 border-danger shadow-sm mb-4">
+               <h5 class="fw-bold text-uppercase text-danger mb-3" style="letter-spacing: 1px;">Story Highlights</h5>
+               <p class="lead mb-0" style="white-space: pre-wrap; font-family: 'Georgia', serif; color: #333;">
+                  {{ video.description }}
+               </p>
+            </div>
+
+            <!-- Tags -->
+            <div class="mt-4" *ngIf="video.tags">
+               <span class="fw-bold me-2 text-uppercase small text-muted">Topics:</span>
+               <span class="badge bg-secondary me-1 px-2 py-1 user-select-all"
+                  *ngFor="let tag of video.tags.split(',')">{{ tag.trim() }}</span>
+            </div>
+         </div>
+
+         <!-- Comments Section -->
+         <div class="mt-5">
+            <h4 class="mb-4 fw-bold border-bottom pb-2">Comments <span class="text-muted fs-5">({{ comments.length
+                  }})</span></h4>
+
+            <!-- Add Comment Input -->
+            <div class="comment-input-area mb-4">
+               <div class="d-flex gap-2" *ngIf="isLoggedIn; else loginToComment">
+                  <input type="text" class="form-control border-0 shadow-sm" [(ngModel)]="newCommentText"
+                     placeholder="Join the discussion..." (keyup.enter)="postComment()">
+                  <button class="btn btn-danger px-4" [disabled]="!newCommentText.trim()"
+                     (click)="postComment()">Post</button>
+               </div>
+               <ng-template #loginToComment>
+                  <p class="text-muted mb-0"><a routerLink="/login" class="text-danger fw-bold">Login</a> to share your
+                     thoughts.</p>
+               </ng-template>
+            </div>
+
+            <!-- Comments List -->
+            <div class="comment-list">
+               <div class="comment-item" *ngFor="let comment of comments">
+                  <div class="d-flex w-100 justify-content-between">
+                     <h6 class="mb-1 fw-bold">{{ comment.user?.username || 'User' }}</h6>
+                     <small class="text-muted">{{ comment.createdAt | date:'mediumDate' }}</small>
+                  </div>
+                  <p class="mb-1 text-secondary">{{ comment.text }}</p>
+               </div>
+               <div *ngIf="comments.length === 0" class="text-center py-5 text-muted bg-light rounded">
+                  <i class="bi bi-chat-square-text display-4 mb-3 d-block opacity-25"></i>
+                  No comments yet. Be the first to start the conversation!
+               </div>
+            </div>
+         </div>
+
+      </div>
+
+      <!-- SIDEBAR (Right Column) -->
+      <div class="col-xl-4 col-lg-4">
+
+         <!-- "Coming Up" Header -->
+         <div class="card border-0 shadow-sm mb-4">
+            <div
+               class="card-header bg-dark text-white fw-bold text-uppercase py-3 d-flex justify-content-between align-items-center sidebar-header">
+               <span><i class="bi bi-collection-play-fill me-2 text-danger"></i>Top Stories</span>
+               <span class="badge bg-danger rounded-pill">Up Next</span>
+            </div>
+
+            <div class="list-group list-group-flush">
+               <!-- Video Item -->
+               <a [routerLink]="['/video', item.id]" *ngFor="let item of relatedVideos"
+                  class="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-center related-video-item"
+                  [class.bg-light]="item.id === video.id">
+
+                  <!-- Thumbnail -->
+                  <div class="position-relative flex-shrink-0">
+                     <img [src]="item.thumbnailUrl || 'assets/placeholder-news.jpg'" class="related-thumbnail shadow-sm"
+                        alt="News Thumbnail">
+                  </div>
+
+                  <!-- Meta -->
+                  <div class="flex-grow-1 min-w-0">
+                     <h6 class="mb-1 text-dark fw-bold line-clamp-2" title="{{ item.title }}">
+                        {{ item.title }}
+                     </h6>
+                     <small class="text-muted d-block text-uppercase" style="font-size: 0.7rem; font-weight: 700;">
+                        {{ item.user?.username || 'Reporter' }}
+                     </small>
+                  </div>
+               </a>
+            </div>
+
+            <!-- View More Link -->
+            <div class="card-footer bg-white text-center py-2 border-top">
+               <a routerLink="/news" class="text-danger text-decoration-none small fw-bold text-uppercase">
+                  View All News <i class="bi bi-arrow-right ms-1"></i>
+               </a>
+            </div>
+         </div>
+
+         <!-- Ad / Promo Placeholder 1 -->
+         <div class="bg-light border border-secondary border-dashed p-4 text-center text-muted rounded mb-4">
+            <small class="d-block mb-2 text-uppercase fw-bold">Advertisement</small>
+            <div style="height: 200px; background: #e9ecef;"
+               class="d-flex align-items-center justify-content-center text-black-50 fw-bold">
+               SQUARE AD SPACE 1
+            </div>
+         </div>
+
+      </div>
+
+   </div>
+</div>
+
+<!-- Loading -->
+<div *ngIf="loading" class="d-flex justify-content-center align-items-center" style="height: 60vh;">
+   <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;" role="status"></div>
+</div>
